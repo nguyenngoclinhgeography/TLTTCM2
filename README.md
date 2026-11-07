@@ -1,40 +1,60 @@
-# FIELDNOTE K49 – Trình tạo ảnh minh chứng thực địa
+# FIELDNOTE K49 – Website tạo ảnh minh chứng thực địa
 
-Website tĩnh, chạy bằng HTML/CSS/JavaScript trên **GitHub Pages**. Tải ảnh lên từ thiết bị, điền tên ảnh, ngày giờ, nguồn ảnh, mô tả, chọn tọa độ trên bản đồ. Ảnh gốc được giữ nguyên bố cục; một dải thông tin được thêm bên dưới khi xuất ảnh PNG.
+Website tĩnh chạy trên **GitHub Pages** hoặc mở trực tiếp file `index.html` trong trình duyệt Chrome / Edge. Không cần cài thư viện hoặc backend để tạo ảnh, đặt ghim tọa độ và xuất bộ ZIP.
 
-## Cài đặt trên GitHub Pages
+## Bộ mã nguồn
 
-1. Giải nén gói `FIELDNOTE-K49-WEBSITE.zip`.
-2. Tạo repository GitHub (ví dụ `fieldnote-k49`) và đưa toàn bộ các file `index.html`, `styles.css`, `app.js` và `README.md` vào thư mục gốc.
-3. Mở repository **Settings → Pages → Build and deployment → Deploy from a branch**, chọn nhánh `main`, thư mục `/(root)`, chọn Save.
-4. Mở đường dẫn GitHub Pages (dạng `https://ten-tai-khoan.github.io/fieldnote-k49/`).
+```
+fieldnote-k49-v2/
+├── index.html
+├── assets/
+│   └── styles.css
+└── js/
+    ├── geo.js       (đọc tọa độ Google Maps; định dạng dữ liệu)
+    ├── map.js       (bản đồ OSM, zoom/di chuyển/đặt ghim)
+    ├── zip.js       (tạo ZIP ngay trong trình duyệt, không dùng CDN)
+    ├── export.js    (vẽ ảnh có chú thích, CSV, thư viện HTML)
+    └── app.js       (tương tác, lưu/sửa/xóa, xuất file)
+```
 
-Kết nối mạng cần thiết để tải thư viện Leaflet, JSZip và bản đồ nền OpenStreetMap.
+## Đưa lên GitHub Pages
 
-## Cách sử dụng
+1. Giải nén `FIELDNOTE-K49-V2.zip`.
+2. Tạo một repository GitHub. Tải `index.html`, hai thư mục `assets`, `js` và file `README.md` vào **thư mục gốc** của repository. Giữ nguyên đường dẫn thư mục.
+3. Vào **Settings → Pages → Build and deployment → Deploy from a branch**. Chọn `main` và `/(root)`, lưu cài đặt.
+4. Mở địa chỉ GitHub Pages của repository (ví dụ: `https://ten-github.github.io/fieldnote-k49/`).
 
-1. Chọn loại **Ảnh** hoặc **Video (liên kết)**.
-2. Tải ảnh hoặc nhập URL video, điền mã/tên/địa điểm/ngày giờ/tác giả/mô tả.
-3. Chọn tọa độ bằng cách nhấp bản đồ, nhập tay, hoặc dán URL Google Maps dạng đầy đủ chứa tọa độ. **URL rút gọn** thường không thể tự phân tích nếu không có server; hãy mở URL rồi sao chép tọa độ.
-4. Nhấn **Lưu vào bộ minh chứng** cho từng ảnh/video. Có thể chỉnh sửa hoặc xóa trước khi xuất.
-5. Chọn **Xuất ZIP**. Kết quả gồm:
-   - `anh-minh-chung/`: ảnh PNG có dải chú thích.
-   - `anh-goc/`: ảnh nguyên bản.
-   - `danh-muc-minh-chung.csv`, `danh-muc-minh-chung.json`: bảng dữ liệu và liên kết bản đồ.
-   - `thu-vien-minh-chung.html`: trang tra cứu ảnh/video.
+## Hướng dẫn sử dụng
 
-## Lưu ý
+1. Chọn **Ảnh thực địa** → chọn ảnh JPG/PNG/WebP từ máy (≤35 MB). Hoặc chọn **Video (liên kết)**.
+2. Điền mã, ngày khảo sát, tên tư liệu, địa điểm, ngày/giờ, người chụp và mô tả.
+3. Chọn vị trí theo một trong ba cách:
+   - Nhấp trực tiếp lên bản đồ, kéo để di chuyển hoặc nhấn `+`, `−` để đổi tỉ lệ.
+   - Dán **cặp tọa độ**, ví dụ `15.123456, 108.123456`, vào ô liên kết rồi nhấn **Đọc tọa độ**.
+   - Tìm địa điểm trên **Google Maps** bằng nút **Tìm trên Google Maps**, sao chép tọa độ thật của điểm, sau đó nhập vào đây. Có thể dán link Google Maps *đầy đủ* chứa tọa độ (dạng `@vĩ-độ,kinh-độ`, `!3d...!4d...`, `?query=vĩ-độ,kinh-độ`). Link `maps.app.goo.gl` rút gọn **không tự động giải mã** được trong website tĩnh.
+4. Xem trước hình, nhấn **Lưu minh chứng**. Có thể chọn **Chỉnh sửa**, **Xóa** hoặc **Tải ảnh** ở danh sách.
+5. Nhấn **Xuất toàn bộ ZIP**. ZIP bao gồm:
+   - `anh-minh-chung/`: ảnh PNG thêm dải thông tin bên dưới (không phủ nội dung ảnh);
+   - `anh-goc/`: file ảnh nguyên bản để đối chiếu;
+   - `danh-muc-minh-chung.csv` và `.json`;
+   - `thu-vien-minh-chung.html`: thư viện xem lại ảnh/video, có liên kết Google Maps;
+   - `HUONG-DAN.txt`.
+6. Muốn dùng **QR trong Word**, đưa thư mục ảnh và `thu-vien-minh-chung.html` từ ZIP lên website/hosting công khai rồi tạo mã QR dẫn đến trang thư viện đó. **Xuất ZIP không có nghĩa tự động đăng nội dung lên GitHub**.
 
-- Công cụ này xử lý file **ngay trên trình duyệt**, không tự động đăng tải ảnh/video hoặc kết quả lên GitHub. Muốn công bố bộ ảnh bằng GitHub Pages, phải tải lên repository/hosting thủ công hoặc xây dựng hệ thống lưu trữ có đăng nhập riêng.
-- Hình ảnh bị giới hạn kích thước xuất tối đa khoảng 3000 × 3200 pixel để duy trì hiệu năng; ảnh gốc luôn có trong bộ ZIP.
-- Ngày, giờ, tọa độ được **người dùng cung cấp** và cần đối chiếu với thực tế. Tọa độ điểm khảo sát không tự động chứng minh chính xác vị trí máy ảnh lúc chụp.
-- Các tệp ảnh giữ trong bộ nhớ phiên làm việc; **xuất ZIP trước khi đóng hoặc tải lại trang**. Không đưa ảnh chứa thông tin cá nhân nhạy cảm lên website công khai.
-- Liên kết Google Maps được mở bằng Google Maps URLs (không cần API key). Bản đồ chọn điểm dùng Leaflet và OpenStreetMap.
-- Video chỉ được ghi lại bằng URL trong danh mục, không tải file video hoặc đóng dấu chú thích lên video.
+## Cách hoạt động khi không có Internet
 
-## Công nghệ
+- Form, tải ảnh, vẽ chú thích, chọn tọa độ bằng cách nhấp bản đồ, nhập tọa độ thủ công, tạo PNG và ZIP **vẫn chạy**. Nếu bản đồ nền không tải được thì một nền lưới và thông báo thay thế sẽ xuất hiện; lúc này khó xác định vị trí bằng hình bản đồ, nên dùng tọa độ đã sao chép từ Google Maps khi có kết nối.
+- **Nền bản đồ** cần Internet để lấy các tile hiện trong vùng người dùng đang xem từ `tile.openstreetmap.org`; không tải trước tile, không dùng bản đồ offline.
+- Nút mở Google Maps và các đường dẫn video vẫn cần kết nối mạng.
 
-- HTML5, CSS3, JavaScript và Canvas API.
-- Leaflet 1.9.4 + OpenStreetMap tiles.
-- JSZip 3.10.1 (xuất bộ ZIP).
-- Toàn bộ code nguồn có thể chỉnh sửa tùy ý phục vụ nghiên cứu và học tập.
+## Lưu ý về tính xác thực và riêng tư
+
+- Ngày, giờ, tên địa điểm và tọa độ đều do người dùng nhập. Tọa độ **điểm khảo sát** không mặc nhiên là vị trí máy ảnh khi chụp.
+- Ảnh chỉ nằm trong bộ nhớ tab, không tự gửi lên máy chủ. **Xuất ZIP trước khi đóng tab hoặc làm mới trang**.
+- Đối chiếu ảnh và thông tin với bản gốc; chỉ công bố hình ảnh có quyền chia sẻ.
+- Bản đồ nền: © OpenStreetMap contributors, tuân thủ chính sách [OSM Tile Usage](https://operations.osmfoundation.org/policies/tiles/).
+- Địa chỉ Google Maps được mở bằng cơ chế Maps URLs của Google, không cần API key.
+
+## Phạm vi thử nghiệm
+
+Đã kiểm tra cấu trúc mã nguồn, tương tác và việc tạo file ZIP trong môi trường thử nghiệm. Nên kiểm tra thêm trực tiếp trên GitHub Pages với kết nối Internet để xác nhận nền bản đồ tại mạng của từng người dùng.
