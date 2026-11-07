@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12283e">
+  <title>FIELDNOTE K49 | Tạo minh chứng thực địa</title>
+  <meta name="description" content="Tạo ảnh minh chứng thực địa với tên, ngày giờ, tọa độ, nguồn ảnh và ghi chú. Xuất ảnh PNG và bộ ZIP phụ lục.">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzxjsq3e4GNP2/s3o4v5/1p8+E=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar"><div class="top-inner">
+  <div class="brand"><div class="brandmark">F<span>·</span></div><div><div class="brandname">FIELDNOTE <b>K49</b></div><div class="branddesc">BỘ CÔNG CỤ MINH CHỨNG THỰC ĐỊA</div></div></div>
+  <div class="topnote">HÀNH TRÌNH CON ĐƯỜNG DI SẢN MIỀN TRUNG <span>13–20.09.2026</span></div>
+</div></header>
+<main class="wrap">
+ <section class="intro"><div><div class="eyebrow">PHỤ LỤC 3 · BÁO CÁO THỰC TẾ CHUYÊN MÔN</div><h1>Chú thích ảnh <em>chuyên nghiệp,</em><br>không cần chỉnh tay.</h1><p>Tải ảnh, nhập thông tin, chọn điểm khảo sát trên bản đồ và xuất ảnh minh chứng. Ảnh của bạn được xử lý ngay trên trình duyệt, không tự động tải lên máy chủ.</p></div><div class="intro-numbers"><div><b>01</b><span>Chọn ảnh</span></div><div><b>02</b><span>Gắn thông tin</span></div><div><b>03</b><span>Tải kết quả</span></div></div></section>
+ <div class="workspace">
+  <section class="panel formpanel" aria-label="Nhập dữ liệu minh chứng">
+   <div class="section-header"><div><span class="section-kicker">BƯỚC 01</span><h2>Thông tin minh chứng</h2></div><span class="tag">K49 · HISG1506</span></div>
+   <div class="kindbar" role="group" aria-label="Loại minh chứng"><button type="button" id="photo-tab" class="kind active" aria-pressed="true">Ảnh thực địa</button><button type="button" id="video-tab" class="kind" aria-pressed="false">Video (liên kết)</button></div>
+   <div id="photoFields"><label class="uploadbox" for="photo-file"><span class="uploadico">↑</span><b>Chọn ảnh từ thiết bị</b><span>JPG, PNG, WebP · Ưu tiên ảnh gốc rõ nét</span><input id="photo-file" accept="image/jpeg,image/png,image/webp" type="file"></label><div class="filename" id="file-name">Chưa chọn ảnh</div></div>
+   <div id="videoFields" hidden><label>Liên kết video (Google Drive, YouTube hoặc URL công khai)<input type="url" id="video-url" placeholder="https://..." autocomplete="off"></label><p class="tiny">Website ghi lại đường dẫn video trong danh mục; không tải video lên GitHub hoặc nhúng hình lên video.</p></div>
+   <div class="form-grid"><label>Mã minh chứng<input id="code" placeholder="MC06-01" maxlength="36"></label><label>Ngày khảo sát<select id="trip-day"><option value="1">Ngày 1 · 13/09/2026</option><option value="2">Ngày 2 · 14/09/2026</option><option value="3">Ngày 3 · 15/09/2026</option><option value="4">Ngày 4 · 16/09/2026</option><option value="5">Ngày 5 · 17/09/2026</option><option value="6" selected>Ngày 6 · 18/09/2026</option><option value="7">Ngày 7 · 19/09/2026</option><option value="8">Ngày 8 · 20/09/2026</option></select></label></div>
+   <label>Tên bức ảnh / tư liệu <span class="required">*</span><input id="title" maxlength="130" placeholder="Cảnh quan hồ Đak Ke"></label>
+   <label>Tên địa điểm <span class="required">*</span><input id="place" maxlength="100" placeholder="Hồ Đak Ke – Măng Đen"></label>
+   <div class="form-grid"><label>Ngày chụp<input type="date" id="date" value="2026-09-18"></label><label>Giờ chụp<input type="time" id="time"></label></div>
+   <label>Người chụp / nguồn tư liệu<input id="author" maxlength="110" placeholder="Ảnh: Nhóm sinh viên K49"></label>
+   <label>Mô tả ngắn (1–2 câu)<textarea id="description" rows="3" maxlength="330" placeholder="Quan sát cảnh quan hồ nước ngọt và hoạt động du lịch sinh thái tại Măng Đen."></textarea><span class="hint">Nên diễn đạt những gì quan sát được; tránh ghi thông tin chưa kiểm chứng.</span></label>
+   <div class="lochead"><div><span class="section-kicker">BƯỚC 02</span><h3>Vị trí khảo sát</h3></div><button type="button" id="google-maps" class="text-btn">Mở Google Maps ↗</button></div>
+   <label>Liên kết Google Maps (không bắt buộc)<div class="inputaction"><input id="maps-url" placeholder="Dán liên kết dài có tọa độ hoặc nhập tay bên dưới"><button type="button" id="parse-map">Đọc tọa độ</button></div></label>
+   <div class="form-grid"><label>Vĩ độ (Latitude)<input type="number" step="any" id="lat" min="-90" max="90" placeholder="Chọn trên bản đồ"></label><label>Kinh độ (Longitude)<input type="number" step="any" id="lng" min="-180" max="180" placeholder="Chọn trên bản đồ"></label></div>
+   <div id="map" role="region" aria-label="Bản đồ tương tác chọn tọa độ"></div><p class="tiny">Nhấp bản đồ để đặt ghim. Đây là <b>tọa độ điểm khảo sát</b>, không mặc nhiên là vị trí máy ảnh lúc chụp. Nếu Google Maps chỉ cho liên kết rút gọn, hãy mở liên kết rồi sao chép tọa độ trên bản đồ.</p>
+   <div class="actionbar"><button id="save" type="button" class="primary">＋ Lưu vào bộ minh chứng</button><button id="clear" type="button" class="secondary">Làm mới</button></div>
+   <div id="status" class="status" role="status" aria-live="polite"></div>
+  </section>
+  <section class="rightcol">
+   <div class="panel previewpanel"><div class="section-header"><div><span class="section-kicker">BƯỚC 03</span><h2>Xem trước ảnh xuất</h2></div><span class="tag">KHÔNG CẮT ẢNH GỐC</span></div>
+    <div class="previewbox"><canvas id="preview" aria-label="Ảnh minh chứng với dải chú thích"></canvas><div id="preview-empty" class="preview-empty"><div class="empty-illustration">▧</div><strong>Ảnh minh chứng sẽ hiển thị ở đây</strong><span>Chọn ảnh bên trái để xem kết quả thực tế</span></div></div>
+    <div class="preview-foot"><div><b>Ảnh giữ nguyên bố cục</b><span>Thông tin nằm ở dải chú thích phía dưới</span></div><button id="download-one" class="outline" type="button">↓ Tải ảnh hiện tại</button></div>
+   </div>
+   <div class="panel collection"><div class="section-header"><div><span class="section-kicker">KHO MINH CHỨNG</span><h2>Danh sách đã lưu <span id="count" class="count">0</span></h2></div><button id="download-zip" type="button" class="outline">↓ Xuất ZIP</button></div>
+     <p class="small">Bộ ZIP gồm ảnh đã chú thích, ảnh gốc, danh mục CSV/JSON và trang tra cứu HTML. Video được lưu dưới dạng liên kết.</p><div class="entries" id="entries"><div class="empty-state">Chưa có minh chứng nào. Hãy thêm ảnh hoặc liên kết video ở biểu mẫu bên trái.</div></div>
+     <div class="collection-footer"><button id="clear-all" type="button" class="text-btn danger">Xóa toàn bộ danh sách</button><span>Dữ liệu chỉ lưu tạm trong phiên mở trang.</span></div>
+   </div>
+   <div class="sidenote"><span class="note-ico">i</span><p><b>Lưu ý tính xác thực:</b> Ngày, giờ, tọa độ và người chụp cần đúng tư liệu thực tế. Website không tự xác minh thông tin đã nhập. Trước khi đóng trang, hãy xuất ZIP để tránh mất dữ liệu.</p></div>
+  </section>
+ </div>
+</main>
+<footer>FIELDNOTE K49 · Công cụ tạo phụ lục ảnh/video thực địa · Không lưu hình lên máy chủ</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
